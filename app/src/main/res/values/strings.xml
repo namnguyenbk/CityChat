@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">LapitChat</string>
+    <string name="welcome">Welcome to Lapit chat app!</string>
+    <string name="new_acc_btn">NEED A NEW ACCOUNT</string>
+    <string name="display_name_label">Display name</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="create_account_label">Create Account</string>
+    <string name="logout_label">Logout</string>
+    <string name="account_setting_label">Account setting</string>
+    <string name="all_users_label">All users</string>
+    <string name="create_new_account_label">Create new account</string>
+    <string name="login_label">Login</string>
+    <string name="login_account_label">Login to your account</string>
+    <string name="already_an_acc_label">ALREADY HAVE AN ACCOUNT</string>
+    <string name="reg_user">Registing user</string>
+    <string name="cannot_sign_in">Cannot sign in. Please try again</string>
+    <string name="wait_mess">Waiting</string>
+    <string name="cannot_login">Can\'t not login. Please try again!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="req_label">REQUESTS</string>
+</resources>

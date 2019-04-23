@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/accentV2"
+    tools:context=".user.SettingActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="0dp"
+        android:background="@android:color/white" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="10dp"
+        android:maxWidth="240dp"
+        android:maxHeight="240dp"
+        android:src="@drawable/avatar_default" />
+    <TextView
+        android:id="@+id/display_name_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_below="@+id/avatar_setting"
+        android:layout_centerHorizontal="true"
+        android:text="Display name"/>
+    <TextView
+        android:id="@+id/email_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@+id/display_name_setting"
+        android:layout_centerHorizontal="true"
+        android:text="Email"/>
+    <Button
+        android:id="@+id/change_avatar_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/email_setting"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:background="@color/accentV1"
+        android:text="CHANGE AVATAR"
+        />
+    <Button
+        android:id="@+id/change_status_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/change_avatar_btn"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:background="@color/accentV1"
+        android:text="CHANGE STATUS"
+        />
+    <Button
+        android:id="@+id/change_displayname_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/change_status_btn"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:background="@color/accentV1"
+        android:text="CHANGE DISPLAY NAME"
+        />
+</RelativeLayout>
