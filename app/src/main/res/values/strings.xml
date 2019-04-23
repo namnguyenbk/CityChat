@@ -21,4 +21,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="req_label">REQUESTS</string>
+    <string name="save_changes">SAVE CHANGES</string>
+    <string name="upload">UPLOAD</string>
 </resources>

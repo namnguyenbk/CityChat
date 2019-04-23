@@ -18,7 +18,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import btl.lapitchat.chat.ChatsFragment;
 import btl.lapitchat.chat.FriendsFragment;
 import btl.lapitchat.chat.RequestsFragment;
+import btl.lapitchat.user.SettingActivity;
 import btl.lapitchat.user.StartActivity;
+import btl.lapitchat.user.UsersActivity;
 
 public class MainActivity extends AppCompatActivity implements
         FriendsFragment.OnFragmentInteractionListener,
@@ -77,6 +79,14 @@ public class MainActivity extends AppCompatActivity implements
         if ( item.getItemId() == R.id.main_logout_btn){
             mAuth.signOut();
             gotoStartView();
+        }
+        if( item.getItemId() == R.id.main_setting_btn){
+            Intent settingIntent = new Intent(MainActivity.this, SettingActivity.class);
+            startActivity(settingIntent);
+        }
+        if (item.getItemId() == R.id.main_users_btn){
+            Intent usersIntent = new Intent(MainActivity.this, UsersActivity.class);
+            startActivity(usersIntent);
         }
          return true;
     }

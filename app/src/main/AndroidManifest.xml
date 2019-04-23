@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="btl.lapitchat">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,14 +14,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".user.SettingActivity"></activity>
+        <activity android:name=".user.UsersActivity" android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".user.StatusActivity"
+            android:parentActivityName=".user.SettingActivity" />
+        <activity
+            android:name=".user.SettingActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".user.LoginActivity"
             android:parentActivityName=".user.StartActivity" />
         <activity
             android:name=".user.RegisterActivity"
             android:parentActivityName=".user.StartActivity" />
-        <activity android:name=".user.StartActivity" />
+        <activity android:name=".user.StartActivity"  />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
 
 </manifest>
