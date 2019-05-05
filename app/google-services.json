@@ -21,6 +21,10 @@
             "package_name": "btl.lapitchat",
             "certificate_hash": "0f05e3511d803d3d83cd744649f2a39eb87618e5"
           }
+        },
+        {
+          "client_id": "574792428040-hqmkrvt345ns8k019v4scm2mhuhjbfhf.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [

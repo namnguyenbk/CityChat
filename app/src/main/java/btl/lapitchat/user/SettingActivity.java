@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -77,6 +78,7 @@ public class SettingActivity extends AppCompatActivity {
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = mCurrentUser.getUid();
         mDataUser = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+        mDataUser.keepSynced(true);
         mDataUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -91,8 +93,9 @@ public class SettingActivity extends AppCompatActivity {
                 if (image.contains("default")){
                     mAvatar.setImageResource(R.drawable.avatar_default);
                 }else {
-                    Picasso.with(SettingActivity.this).load(image).into(mAvatar);
-                    mAvatar.setImageURI(Uri.parse(image));
+//                    Picasso.with(SettingActivity.this).load(image).placeholder(R.drawable.avatar_default).into(mAvatar);
+                    Picasso.with(SettingActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(mAvatar);
+//                    mAvatar.setImageURI(Uri.parse(image));
                 }
             }
 

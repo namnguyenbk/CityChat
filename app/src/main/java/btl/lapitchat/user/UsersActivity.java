@@ -1,6 +1,7 @@
 package btl.lapitchat.user;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,6 +58,15 @@ public class UsersActivity extends AppCompatActivity {
                 holder.setNameView(model.getName());
                 holder.setStatusView(model.getStatus());
                 holder.setAvatarView(model.getImage());
+                final String userId = getRef(position).getKey();
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent profileIntent = new Intent(UsersActivity.this, ProfileActivity.class);
+                        profileIntent.putExtra("user_id",userId);
+                        startActivity(profileIntent);
+                    }
+                });
             }
 
             @NonNull
@@ -90,7 +100,7 @@ public class UsersActivity extends AppCompatActivity {
 
         public void setAvatarView( String url){
             CircleImageView avatarUserItem = mView.findViewById(R.id.avatar_user_item);
-            Picasso.with(UsersActivity.getContext()).load(url).into(avatarUserItem);
+            Picasso.with(UsersActivity.getContext()).load(url).placeholder(R.drawable.avatar_default).into(avatarUserItem);
         }
     }
 

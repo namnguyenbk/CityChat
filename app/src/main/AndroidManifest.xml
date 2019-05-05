@@ -13,8 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:name=".CityChat"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".user.UsersActivity" android:parentActivityName=".MainActivity"/>
+        <activity android:name=".user.ProfileActivity"/>
+        <activity
+            android:name=".user.UsersActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".user.StatusActivity"
             android:parentActivityName=".user.SettingActivity" />
@@ -27,7 +31,7 @@
         <activity
             android:name=".user.RegisterActivity"
             android:parentActivityName=".user.StartActivity" />
-        <activity android:name=".user.StartActivity"  />
+        <activity android:name=".user.StartActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
