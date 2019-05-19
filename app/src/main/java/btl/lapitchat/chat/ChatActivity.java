@@ -137,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
         loadMessages();
         mTitleView.setText(userName);
 
-        mRootRef.child("Users").child(mChatUser).addValueEventListener(new ValueEventListener() {
+        mRootRef.child("users").child(mChatUser).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
