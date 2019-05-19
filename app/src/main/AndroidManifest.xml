@@ -7,20 +7,24 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".CityChat"
         android:allowBackup="true"
         android:icon="@mipmap/citychat_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/citychat_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".CityChat"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".chat.ChatActivity"
+            android:parentActivityName=".MainActivity"/>
+
         <service
             android:name=".service.FirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
+
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
                 android:resource="@mipmap/citychat_icon" />
@@ -28,10 +32,12 @@
                 android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/colorAccent" />
         </service>
+
         <activity android:name=".user.ProfileActivity">
             <intent-filter>
-                <action android:name=".btl.lapitcaht.TARGET_NOTIFICATION"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name=".btl.lapitcaht.TARGET_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity

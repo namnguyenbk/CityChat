@@ -142,7 +142,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mSendReqFriendBtnProfile.setEnabled(false);
-                // mot friend
+                // not friend
                 if (mCurrentState.equals("not_friend")) {
                     Map requestMap = new HashMap<>();
                     requestMap.put(mCurrentUser.getUid() + "/" + userId + "req_type", "sent");
@@ -218,6 +218,31 @@ public class ProfileActivity extends AppCompatActivity {
 //                                                                    Toast.makeText(ProfileActivity.this, "Cancel request successfully", Toast.LENGTH_LONG).show();
                                                                 }
                                                             });
+                                                }
+                                            });
+                                }
+                            });
+                }
+
+//                if(mCurrentState.equals("friend")){
+//                    Map unfriendMap = new HashMap()
+//                }
+                if (mCurrentState.equals("friend")) {
+                    mFriendsDatabase.child(mCurrentUser.getUid()).child(userId).removeValue()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    mFriendsDatabase.child(userId).child(mCurrentUser.getUid()).removeValue()
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    mSendReqFriendBtnProfile.setEnabled(true);
+                                                    mCurrentState = "not_friend";
+                                                    mSendReqFriendBtnProfile.setText(getString(R.string.send_firend_req));
+                                                    mSendReqFriendBtnProfile.setBackgroundColor(Color.parseColor("#419ADF"));
+                                                    Toast.makeText(ProfileActivity.this, "Đã huỷ kết bạn", Toast.LENGTH_LONG).show();
+                                                    mSendDeclineFriendBtnProfile.setVisibility(View.INVISIBLE);
+                                                    mSendDeclineFriendBtnProfile.setEnabled(false);
                                                 }
                                             });
                                 }

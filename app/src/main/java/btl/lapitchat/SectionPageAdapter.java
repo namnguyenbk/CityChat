@@ -9,7 +9,7 @@ import btl.lapitchat.chat.ChatsFragment;
 import btl.lapitchat.chat.FriendsFragment;
 import btl.lapitchat.chat.RequestsFragment;
 
-class SectionPageAdapter extends FragmentPagerAdapter {
+public class SectionPageAdapter extends FragmentPagerAdapter {
 
     public SectionPageAdapter(FragmentManager fm) {
         super(fm);

@@ -1,37 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<!--<RelativeLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="10dp">-->
+    <!--<de.hdodenhof.circleimageview.CircleImageView-->
+        <!--android:id="@+id/avatar_user_item"-->
+        <!--android:layout_width="67dp"-->
+        <!--android:layout_height="67dp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/name_user_item"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:layout_marginStart="5dp"-->
+        <!--android:layout_marginEnd="5dp"-->
+        <!--android:layout_toEndOf="@+id/avatar_user_item"-->
+        <!--android:textSize="20sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/status_item"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/name_user_item"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:layout_marginStart="3dp"-->
+        <!--android:layout_marginTop="6dp"-->
+        <!--android:layout_marginEnd="5dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:layout_toEndOf="@+id/avatar_user_item"-->
+        <!--android:textSize="15sp" />-->
+
+<!--</RelativeLayout>-->
+<!---->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:background="?android:selectableItemBackground">
+
+<de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/avatar_user_item"
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:layout_marginBottom="15dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="15dp"
+    android:src="@drawable/avatar_default" />
+
+<TextView
+    android:id="@+id/user_single_name"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp">
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/avatar_user_item"
-        android:layout_width="67dp"
-        android:layout_height="67dp" />
+    android:layout_alignTop="@+id/avatar_user_item"
+    android:layout_marginStart="20dp"
+    android:layout_toEndOf="@+id/avatar_user_item"
+    android:text="Display Name"
+    android:textColor="@android:color/black"
+    android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/name_user_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_toEndOf="@+id/avatar_user_item"
-        android:text="Nam"
-        android:textSize="20sp" />
+<TextView
+    android:id="@+id/status_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignStart="@+id/user_single_name"
+    android:layout_below="@+id/user_single_name"
+    android:layout_marginTop="10dp"
+    android:text="User default Status" />
 
-    <TextView
-        android:id="@+id/status_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/name_user_item"
-        android:layout_margin="5dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_toEndOf="@+id/avatar_user_item"
-        android:text="ndfd"
-        android:textSize="15sp" />
+<ImageView
+    android:id="@+id/user_single_online_icon"
+    android:layout_width="8dp"
+    android:layout_height="wrap_content"
+    android:layout_alignTop="@+id/user_single_name"
+    android:layout_marginLeft="10dp"
+    android:layout_toEndOf="@+id/user_single_name"
+    android:visibility="invisible"
+    app:srcCompat="@drawable/online_icon" />
 
 </RelativeLayout>
