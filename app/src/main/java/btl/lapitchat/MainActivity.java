@@ -1,38 +1,61 @@
 package btl.lapitchat;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
-import btl.lapitchat.chat.ChatsFragment;
-import btl.lapitchat.chat.FriendsFragment;
+import btl.lapitchat.chat.ChatActivity;
+import btl.lapitchat.chat.Friends;
 import btl.lapitchat.chat.RequestsFragment;
+import btl.lapitchat.user.ProfileActivity;
 import btl.lapitchat.user.SettingActivity;
 import btl.lapitchat.user.StartActivity;
 import btl.lapitchat.user.UsersActivity;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity implements
-        FriendsFragment.OnFragmentInteractionListener,
-        RequestsFragment.OnFragmentInteractionListener,
-        ChatsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
+    private RecyclerView mFriendsList;
+
+    private DatabaseReference mFriendsDatabase;
+    private DatabaseReference mUsersDatabase;
+
+    private String mCurrent_user_id;
+
     private Toolbar mToolbar;
     private static FirebaseAuth mAuth;
     private static FirebaseDatabase mData;
 
-    private TabLayout mTabMain;
-    private ViewPager mViewPager;
-    private SectionPageAdapter mSectionPageAdapter;
+    private DatabaseReference mUserRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +69,24 @@ public class MainActivity extends AppCompatActivity implements
         // Toolbar
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Lapit Chat");
+        getSupportActionBar().setTitle("City Chat");
+        if (mAuth.getCurrentUser() != null) {
+            mUserRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
+        }
 
-        // Tabs
-        mTabMain = findViewById(R.id.main_tabs);
-        mViewPager = findViewById(R.id.main_pager);
-        mSectionPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mSectionPageAdapter);
-        mTabMain.setupWithViewPager(mViewPager);
+        mFriendsList = findViewById(R.id.friends_list);
+        mAuth = FirebaseAuth.getInstance();
+
+        mCurrent_user_id = mAuth.getCurrentUser().getUid();
+
+        mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("friends").child(mCurrent_user_id);
+        mFriendsDatabase.keepSynced(true);
+        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+        mUsersDatabase.keepSynced(true);
+
+        mFriendsList.setHasFixedSize(true);
+        mFriendsList.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     @Override
@@ -63,7 +96,70 @@ public class MainActivity extends AppCompatActivity implements
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if ( currentUser == null){
             gotoStartView();
+        } else {
+            mUserRef.child("online").setValue("true");
         }
+
+        FirebaseRecyclerOptions<Friends> options = new FirebaseRecyclerOptions.Builder<Friends>()
+                .setQuery(mFriendsDatabase, Friends.class).build();
+            FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull final FriendsViewHolder friendsViewHolder, int position, @NonNull Friends friends) {
+                friendsViewHolder.setDate(friends.getDate());
+                final String list_user_id = getRef(position).getKey();
+                mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        final String userName = dataSnapshot.child("name").getValue().toString();
+                        String userThumb = dataSnapshot.child("image").getValue().toString();
+                        if(dataSnapshot.hasChild("online")) {
+                            String userOnline = dataSnapshot.child("online").getValue().toString();
+                            friendsViewHolder.setUserOnline(userOnline);
+                        }
+                        friendsViewHolder.setName(userName);
+                        friendsViewHolder.setUserImage(userThumb, MainActivity.this);
+                        friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                CharSequence options[] = new CharSequence[]{"Xem trang cá nhân", "Gửi tin nhắn"};
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                builder.setTitle("Tuỳ chọn");
+                                builder.setItems(options, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //Click Event for each item.
+                                        if(i == 0){
+                                            Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                                            profileIntent.putExtra("user_id", list_user_id);
+                                            startActivity(profileIntent);
+                                        }
+                                        if(i == 1){
+                                            Intent chatIntent = new Intent(MainActivity.this, ChatActivity.class);
+                                            chatIntent.putExtra("user_id", list_user_id);
+                                            chatIntent.putExtra("user_name", userName);
+                                            startActivity(chatIntent);
+                                        }
+                                    }
+                                });
+                                builder.show();
+                            }
+                        });
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+            }
+
+            @NonNull
+            @Override
+            public FriendsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.users_single, viewGroup, false);
+                return new FriendsViewHolder(view);
+            }
+        };
+        friendsRecyclerViewAdapter.startListening();
+        mFriendsList.setAdapter(friendsRecyclerViewAdapter);
     }
 
     @Override
@@ -77,8 +173,13 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if ( item.getItemId() == R.id.main_logout_btn){
+            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
             mAuth.signOut();
             gotoStartView();
+        }
+        if( item.getItemId() == R.id.request_friends){
+            Intent settingIntent = new Intent(MainActivity.this, RequestsFragment.class);
+            startActivity(settingIntent);
         }
         if( item.getItemId() == R.id.main_setting_btn){
             Intent settingIntent = new Intent(MainActivity.this, SettingActivity.class);
@@ -106,6 +207,62 @@ public class MainActivity extends AppCompatActivity implements
 
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    protected void onStop() {
+        super.onStop();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if(currentUser != null) {
+
+            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
+
+        }
+
     }
+
+    public static class FriendsViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+
+        public FriendsViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+
+        }
+
+        public void setDate(String date){
+
+            TextView userStatusView = (TextView) mView.findViewById(R.id.status_item);
+            userStatusView.setText(date);
+
+        }
+
+        public void setName(String name){
+
+            TextView userNameView = (TextView) mView.findViewById(R.id.user_single_name);
+            userNameView.setText(name);
+
+        }
+
+        public void setUserImage(String thumb_image, Context ctx){
+
+            CircleImageView userImageView = (CircleImageView) mView.findViewById(R.id.avatar_user_item);
+            Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar_default).into(userImageView);
+
+        }
+
+        public void setUserOnline(String online_status) {
+
+            ImageView userOnlineView = (ImageView) mView.findViewById(R.id.user_single_online_icon);
+
+            if(online_status.equals("true")){
+                userOnlineView.setVisibility(View.VISIBLE);
+            } else {
+                userOnlineView.setVisibility(View.INVISIBLE);
+            }
+        }
+
+    }
+
+
 }

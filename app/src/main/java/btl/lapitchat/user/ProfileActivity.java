@@ -143,31 +143,57 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mSendReqFriendBtnProfile.setEnabled(false);
                 // not friend
-                if (mCurrentState.equals("not_friend")) {
-                    Map requestMap = new HashMap<>();
-                    requestMap.put(mCurrentUser.getUid() + "/" + userId + "req_type", "sent");
-                    requestMap.put(userId + "/" + mCurrentUser.getUid() + "req_type", "received");
-                    mFriendsDatabase.updateChildren(requestMap, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                            HashMap<String, String> notifyData = new HashMap<>();
-                            notifyData.put("from", mCurrentUser.getUid());
-                            notifyData.put("type", "request");
-                            mNotificationDatabase.child(userId).push().setValue(notifyData)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            mSendReqFriendBtnProfile.setBackgroundColor(Color.parseColor("#E71313"));
-                                            mCurrentState = "req_sent";
-                                            mSendReqFriendBtnProfile.setText(getString(R.string.cancel_req_firend));
-                                            Toast.makeText(ProfileActivity.this, "Request sent successfully", Toast.LENGTH_LONG).show();
-                                            mSendDeclineFriendBtnProfile.setVisibility(View.INVISIBLE);
-                                            mSendDeclineFriendBtnProfile.setEnabled(false);
-                                        }
-                                    });
-                        }
-                    });
+                if(mCurrentState.equals("not_friend")){
+//                    mSendDeclineFriendBtnProfile.setText("");
+                    mFriendReqDatabase.child(mCurrentUser.getUid()).child(userId).child("req_type").setValue("sent")
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if( task.isSuccessful()){
+                                        mFriendReqDatabase.child(userId).child(mCurrentUser.getUid()).child("req_type").setValue("received")
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        mSendReqFriendBtnProfile.setBackgroundColor(Color.parseColor("#E71313"));
+                                                        mCurrentState = "req_sent";
+                                                        mSendReqFriendBtnProfile.setText(getString(R.string.cancel_req_firend));
+                                                        Toast.makeText(ProfileActivity.this, "Gửi lời mời kết bạn thành công!", Toast.LENGTH_LONG).show();
+                                                        mSendDeclineFriendBtnProfile.setVisibility(View.INVISIBLE);
+                                                        mSendDeclineFriendBtnProfile.setEnabled(false);
+                                                    }
+                                                });
+                                    }else {
+                                        Toast.makeText(ProfileActivity.this, "Không thể gửi lời mời kết bạn!", Toast.LENGTH_LONG).show();
+                                    }
+                                    mSendReqFriendBtnProfile.setEnabled(true);
+                                }
+                            });
                 }
+//                if (mCurrentState.equals("not_friend")) {
+//                    Map requestMap = new HashMap<>();
+//                    requestMap.put(mCurrentUser.getUid() + "/" + userId + "req_type", "sent");
+//                    requestMap.put(userId + "/" + mCurrentUser.getUid() + "req_type", "received");
+//                    mFriendsDatabase.updateChildren(requestMap, new DatabaseReference.CompletionListener() {
+//                        @Override
+//                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+//                            HashMap<String, String> notifyData = new HashMap<>();
+//                            notifyData.put("from", mCurrentUser.getUid());
+//                            notifyData.put("type", "request");
+//                            mNotificationDatabase.child(userId).push().setValue(notifyData)
+//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void aVoid) {
+//                                            mSendReqFriendBtnProfile.setBackgroundColor(Color.parseColor("#E71313"));
+//                                            mCurrentState = "req_sent";
+//                                            mSendReqFriendBtnProfile.setText(getString(R.string.cancel_req_firend));
+//                                            Toast.makeText(ProfileActivity.this, "Request sent successfully", Toast.LENGTH_LONG).show();
+//                                            mSendDeclineFriendBtnProfile.setVisibility(View.INVISIBLE);
+//                                            mSendDeclineFriendBtnProfile.setEnabled(false);
+//                                        }
+//                                    });
+//                        }
+//                    });
+//                }
                 // not friend
 
                 // cancel request friend
@@ -196,11 +222,11 @@ public class ProfileActivity extends AppCompatActivity {
                 // REQ received
                 if (mCurrentState.equals("req_received")) {
                     final String createdDate = DateFormat.getDateTimeInstance().format(new Date());
-                    mFriendsDatabase.child(mCurrentUser.getUid()).child(userId).setValue(createdDate)
+                    mFriendsDatabase.child(mCurrentUser.getUid()).child(userId).child("date").setValue(createdDate)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    mFriendsDatabase.child(userId).child(mCurrentUser.getUid()).setValue(createdDate)
+                                    mFriendsDatabase.child(userId).child(mCurrentUser.getUid()).child("date").setValue(createdDate)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {

@@ -1,6 +1,7 @@
 package btl.lapitchat.user;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
@@ -33,12 +34,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText loginEmail;
     private TextInputEditText loginPass;
-
+    UserHelper helper;
     private Button loginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        helper = new UserHelper(this);
         setContentView(R.layout.activity_login);
         mAuth = MainActivity.getmAuth();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users");
@@ -66,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void loginAccount(String email, String password) {
+    private void loginAccount(final String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -75,6 +77,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String currentUserId = mAuth.getCurrentUser().getUid();
                             String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                            String name = mUserDatabase.child(currentUserId).child("name").toString();
+                            String status = mUserDatabase.child(currentUserId).child("status").toString();
+                            helper.insert(currentUserId, name, email,status );
                             mUserDatabase.child(currentUserId).child("device_token").setValue(deviceToken)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -97,4 +102,12 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(startIntent);
         finish();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        helper.close();
+    }
+
+
 }

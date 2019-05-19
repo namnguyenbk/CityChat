@@ -70,14 +70,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         String message_type = c.getType();
 
 
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(from_user);
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(from_user);
 
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("thumb_image").getValue().toString();
+                String image = dataSnapshot.child("image").getValue().toString();
 
                 viewHolder.displayName.setText(name);
 

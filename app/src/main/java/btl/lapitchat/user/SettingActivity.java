@@ -35,6 +35,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.util.Random;
 
 import btl.lapitchat.R;
+import btl.lapitchat.model.User;
 import btl.lapitchat.utility.ComonComponents;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -53,6 +54,7 @@ public class SettingActivity extends AppCompatActivity {
     private Button mChangeNameBtn;
     private StorageReference mStorageRef;
     private  ProgressDialog mProcess;
+    UserHelper helper;
 
     private static  final  int GALLERY_PICK = 1;
 
@@ -60,7 +62,7 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
+        helper = new UserHelper(this);
         mToolbar = findViewById(R.id.setting_appbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Account Setting");
@@ -76,7 +78,7 @@ public class SettingActivity extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = mCurrentUser.getUid();
+        final String uid = mCurrentUser.getUid();
         mDataUser = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
         mDataUser.keepSynced(true);
         mDataUser.addValueEventListener(new ValueEventListener() {
@@ -87,8 +89,9 @@ public class SettingActivity extends AppCompatActivity {
                 String image = dataSnapshot.child("image").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
                 String thumbnail = dataSnapshot.child("thumbnail").getValue().toString();
-
+                User currentUser = helper.getUser(uid);
                 mName.setText(name);
+//                mName.setText(currentUser.getName());
                 mEmail.setText(mCurrentUser.getEmail());
                 if (image.contains("default")){
                     mAvatar.setImageResource(R.drawable.avatar_default);
@@ -180,6 +183,12 @@ public class SettingActivity extends AppCompatActivity {
             randomStringBuilder.append(tempChar);
         }
         return randomStringBuilder.toString();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        helper.close();
     }
 
 }

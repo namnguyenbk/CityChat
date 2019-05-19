@@ -3,11 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
         <item
             android:id="@+id/main_setting_btn"
-            android:title="@string/account_setting_label" />
+            android:title="Cài đặt" />
+        <item
+            android:id="@+id/request_friends"
+            android:title="Lời mời kết bạn" />
         <item
             android:id="@+id/main_users_btn"
-            android:title="@string/all_users_label" />
+            android:title="Tìm bạn bè" />
         <item
             android:id="@+id/main_logout_btn"
-            android:title="@string/logout_label" />
+            android:title="Đăng xuất" />
 </menu>

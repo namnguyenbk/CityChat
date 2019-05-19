@@ -2,6 +2,7 @@ package btl.lapitchat.model;
 
 
 public class User {
+    private String email;
     private String name;
     private String image;
     private String status;
