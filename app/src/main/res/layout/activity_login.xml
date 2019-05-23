@@ -23,12 +23,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp">
-        <android.support.design.widget.TextInputEditText
+        <!--<android.support.design.widget.TextInputEditText-->
+            <!--android:id="@+id/login_email"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="@string/email_label"/>-->
+        <AutoCompleteTextView
             android:id="@+id/login_email"
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email_label"/>
+        />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout

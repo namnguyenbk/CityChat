@@ -41,7 +41,9 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -270,7 +272,8 @@ public class ChatActivity extends AppCompatActivity {
                         messageMap.put("message", download_url);
                         messageMap.put("seen", false);
                         messageMap.put("type", "image");
-                        messageMap.put("time", ServerValue.TIMESTAMP);
+                        final String seenDate = DateFormat.getDateTimeInstance().format(new Date());
+                        messageMap.put("time", seenDate);
                         messageMap.put("from", mCurrentUserId);
 
                         Map messageUserMap = new HashMap();
@@ -439,7 +442,8 @@ public class ChatActivity extends AppCompatActivity {
             messageMap.put("message", message);
             messageMap.put("seen", false);
             messageMap.put("type", "text");
-            messageMap.put("time", ServerValue.TIMESTAMP);
+            final String seenDate = DateFormat.getDateTimeInstance().format(new Date());
+            messageMap.put("time", seenDate);
             messageMap.put("from", mCurrentUserId);
 
             Map messageUserMap = new HashMap();

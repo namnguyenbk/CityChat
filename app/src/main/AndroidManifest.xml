@@ -44,6 +44,9 @@
             android:name=".user.UsersActivity"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".chat.RequestsFragment"
+            android:parentActivityName=".chat.RequestsFragment" />
+        <activity
             android:name=".user.StatusActivity"
             android:parentActivityName=".user.SettingActivity" />
         <activity

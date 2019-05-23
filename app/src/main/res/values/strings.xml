@@ -1,31 +1,31 @@
 <resources>
     <string name="app_name">City Chat</string>
     <string name="welcome">Welcome to City chat app!</string>
-    <string name="new_acc_btn">NEED A NEW ACCOUNT</string>
-    <string name="display_name_label">Display name</string>
+    <string name="new_acc_btn">ĐĂNG KÝ TÀI KHOẢN</string>
+    <string name="display_name_label">Tên hiển thị</string>
     <string name="email_label">Email</string>
-    <string name="password_label">Password</string>
-    <string name="create_account_label">Create Account</string>
-    <string name="logout_label">Logout</string>
-    <string name="account_setting_label">Account setting</string>
-    <string name="all_users_label">All users</string>
-    <string name="create_new_account_label">Create new account</string>
-    <string name="login_label">Login</string>
-    <string name="login_account_label">Login to your account</string>
-    <string name="already_an_acc_label">ALREADY HAVE AN ACCOUNT</string>
-    <string name="reg_user">Registing user</string>
-    <string name="cannot_sign_in">Cannot sign in. Please try again</string>
-    <string name="wait_mess">Waiting</string>
-    <string name="cannot_login">Can\'t not login. Please try again!</string>
+    <string name="password_label">Mật khẩu</string>
+    <string name="create_account_label">Tạo tài khoản</string>
+    <string name="logout_label">Đăng xuất</string>
+    <string name="account_setting_label">Cái đặt tuỳ chọn</string>
+    <string name="all_users_label">Danh sách người dùng</string>
+    <string name="create_new_account_label">Tạo mới tài khoản</string>
+    <string name="login_label">Đăng nhập</string>
+    <string name="login_account_label">Đăng nhập</string>
+    <string name="already_an_acc_label">ĐÃ CÓ TÀI KHOẢN</string>
+    <string name="reg_user">Đăng ký</string>
+    <string name="cannot_sign_in">Không thể đăng ký, xin thử lại!</string>
+    <string name="wait_mess">Xin chờ</string>
+    <string name="cannot_login">Không thể đăng nhập, kiểm tra tài khoản và mật khẩu!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="req_label">REQUESTS</string>
-    <string name="save_changes">SAVE CHANGES</string>
-    <string name="upload">UPLOAD</string>
-    <string name="cancel_req_firend">CANCEL FRIEND REQUEST</string>
-    <string name="send_firend_req">SEND FRIEND REQUEST</string>
-    <string name="decline_friend_request">DECLINE FRIEND REQUEST</string>
-    <string name="accept_friend_req">ACCEPT FRIEND REQUEST</string>
-    <string name="unfriend">UNFRIEND</string>
+    <string name="req_label">Gửi lờ kết bạn </string>
+    <string name="save_changes">LƯU THAY ĐỔI</string>
+    <string name="upload">TẢI LÊN</string>
+    <string name="cancel_req_firend">HUỶ YÊU CẦU</string>
+    <string name="send_firend_req">GỬI YÊU CẦU KẾT BẠN</string>
+    <string name="decline_friend_request">TỪ CHỐI YÊU CẦU</string>
+    <string name="accept_friend_req">CHẤP NHẬN LỜI MỜI</string>
+    <string name="unfriend">HUỶ KẾT BẠN</string>
 </resources>

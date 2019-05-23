@@ -28,20 +28,20 @@ public class UserHelper extends SQLiteOpenHelper {
     }
 
     public void insert(String userId, String name, String email, String status) {
-        ContentValues cv=new ContentValues();
-        cv.put("userId", userId);
-        cv.put("name", name);
-        cv.put("email", email);
-        cv.put("status", status);
-        getWritableDatabase().insert("user", "userId", cv);
+//        ContentValues cv=new ContentValues();
+//        cv.put("userId", userId);
+//        cv.put("name", name);
+//        cv.put("email", email);
+//        cv.put("status", status);
+//        getWritableDatabase().insert("user", "userId", cv);
     }
-    public User getUser( String userId ){
-        User user = new User();
+    public void getUser( String userId ){
+//        User user = new User();
 //        Cursor cursor = getReadableDatabase()
 //                .rawQuery("SELECT _id, userId, name, email, status FROM user WHERE userId=" + userId , null);
 //        user.setName(cursor.getString(2));
 //        user.setStatus(cursor.getString(4));
-        return user;
+//        return user;
     }
 
 }

@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -32,10 +34,12 @@ public class LoginActivity extends AppCompatActivity {
     private Toolbar loginToolbar;
     private ProgressDialog mLoader;
 
-    private TextInputEditText loginEmail;
+    private AutoCompleteTextView loginEmail;
     private TextInputEditText loginPass;
     UserHelper helper;
     private Button loginBtn;
+    private  String[] users = new String[] {
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,9 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         loginEmail = findViewById(R.id.login_email);
+        ArrayAdapter adapterUser = new ArrayAdapter(this,android.R.layout.simple_list_item_1, users);
+        loginEmail.setAdapter(adapterUser);
+        loginEmail.setThreshold(1);
         loginPass = findViewById(R.id.login_password);
 
         loginBtn = findViewById(R.id.login_btn);
@@ -75,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         mLoader.dismiss();
                         if (task.isSuccessful()) {
-                            String currentUserId = mAuth.getCurrentUser().getUid();
+                            final String currentUserId = mAuth.getCurrentUser().getUid();
                             String deviceToken = FirebaseInstanceId.getInstance().getToken();
                             String name = mUserDatabase.child(currentUserId).child("name").toString();
                             String status = mUserDatabase.child(currentUserId).child("status").toString();
@@ -84,7 +91,13 @@ public class LoginActivity extends AppCompatActivity {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            gotoStartView();
+                                            mUserDatabase.child(currentUserId).child("online").setValue("true")
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            gotoStartView();
+                                                        }
+                                                    });
                                         }
                                     });
                         } else {

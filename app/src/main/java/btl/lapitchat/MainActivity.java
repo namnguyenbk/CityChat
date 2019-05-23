@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(currentUser != null) {
 
-            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
+            mUserRef.child("online").setValue("true");
 
         }
 
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
 
         public void setUserOnline(String online_status) {
 
-            ImageView userOnlineView = (ImageView) mView.findViewById(R.id.user_single_online_icon);
+            ImageView userOnlineView =  mView.findViewById(R.id.user_single_online_icon);
 
             if(online_status.equals("true")){
                 userOnlineView.setVisibility(View.VISIBLE);

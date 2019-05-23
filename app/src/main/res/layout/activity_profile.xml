@@ -55,9 +55,9 @@
         android:layout_centerHorizontal="true"
         android:padding="10dp"
         android:layout_centerVertical="true"
-        android:text="SEND FRIEND REQUEST"
+        android:text="@string/send_firend_req"
         android:textColor="@color/white"
-        android:background="@color/accentV3"/>
+        android:background="@color/accentV1"/>
     <Button
         android:id="@+id/profile_decline_friend_btn"
         android:textSize="18sp"
