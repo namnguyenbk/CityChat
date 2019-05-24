@@ -89,7 +89,7 @@ public class SettingActivity extends AppCompatActivity {
                 String image = dataSnapshot.child("image").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
                 String thumbnail = dataSnapshot.child("thumbnail").getValue().toString();
-                User currentUser = helper.getUser(uid);
+//                User currentUser = helper.getUser(uid);
                 mName.setText(name);
 //                mName.setText(currentUser.getName());
                 mEmail.setText(mCurrentUser.getEmail());

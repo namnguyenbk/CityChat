@@ -74,19 +74,6 @@ public class MainActivity extends AppCompatActivity {
             mUserRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
         }
 
-        mFriendsList = findViewById(R.id.friends_list);
-        mAuth = FirebaseAuth.getInstance();
-
-        mCurrent_user_id = mAuth.getCurrentUser().getUid();
-
-        mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("friends").child(mCurrent_user_id);
-        mFriendsDatabase.keepSynced(true);
-        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users");
-        mUsersDatabase.keepSynced(true);
-
-        mFriendsList.setHasFixedSize(true);
-        mFriendsList.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     @Override
@@ -95,71 +82,83 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if ( currentUser == null){
+            System.out.println("null");
             gotoStartView();
         } else {
             mUserRef.child("online").setValue("true");
-        }
+            mFriendsList = findViewById(R.id.friends_list);
+            mAuth = FirebaseAuth.getInstance();
 
-        FirebaseRecyclerOptions<Friends> options = new FirebaseRecyclerOptions.Builder<Friends>()
-                .setQuery(mFriendsDatabase, Friends.class).build();
+            mCurrent_user_id = mAuth.getCurrentUser().getUid();
+
+            mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("friends").child(mCurrent_user_id);
+            mFriendsDatabase.keepSynced(true);
+            mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+            mUsersDatabase.keepSynced(true);
+
+            mFriendsList.setHasFixedSize(true);
+            mFriendsList.setLayoutManager(new LinearLayoutManager(this));
+            FirebaseRecyclerOptions<Friends> options = new FirebaseRecyclerOptions.Builder<Friends>()
+                    .setQuery(mFriendsDatabase, Friends.class).build();
             FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull final FriendsViewHolder friendsViewHolder, int position, @NonNull Friends friends) {
-                friendsViewHolder.setDate(friends.getDate());
-                final String list_user_id = getRef(position).getKey();
-                mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        final String userName = dataSnapshot.child("name").getValue().toString();
-                        String userThumb = dataSnapshot.child("image").getValue().toString();
-                        if(dataSnapshot.hasChild("online")) {
-                            String userOnline = dataSnapshot.child("online").getValue().toString();
-                            friendsViewHolder.setUserOnline(userOnline);
-                        }
-                        friendsViewHolder.setName(userName);
-                        friendsViewHolder.setUserImage(userThumb, MainActivity.this);
-                        friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                CharSequence options[] = new CharSequence[]{"Xem trang cá nhân", "Gửi tin nhắn"};
-                                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                builder.setTitle("Tuỳ chọn");
-                                builder.setItems(options, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        //Click Event for each item.
-                                        if(i == 0){
-                                            Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
-                                            profileIntent.putExtra("user_id", list_user_id);
-                                            startActivity(profileIntent);
-                                        }
-                                        if(i == 1){
-                                            Intent chatIntent = new Intent(MainActivity.this, ChatActivity.class);
-                                            chatIntent.putExtra("user_id", list_user_id);
-                                            chatIntent.putExtra("user_name", userName);
-                                            startActivity(chatIntent);
-                                        }
-                                    }
-                                });
-                                builder.show();
+                @Override
+                protected void onBindViewHolder(@NonNull final FriendsViewHolder friendsViewHolder, int position, @NonNull Friends friends) {
+                    friendsViewHolder.setDate(friends.getDate());
+                    final String list_user_id = getRef(position).getKey();
+                    mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            final String userName = dataSnapshot.child("name").getValue().toString();
+                            String userThumb = dataSnapshot.child("image").getValue().toString();
+                            if(dataSnapshot.hasChild("online")) {
+                                String userOnline = dataSnapshot.child("online").getValue().toString();
+                                friendsViewHolder.setUserOnline(userOnline);
                             }
-                        });
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
-            }
+                            friendsViewHolder.setName(userName);
+                            friendsViewHolder.setUserImage(userThumb, MainActivity.this);
+                            friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    CharSequence options[] = new CharSequence[]{"Xem trang cá nhân", "Gửi tin nhắn"};
+                                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                    builder.setTitle("Tuỳ chọn");
+                                    builder.setItems(options, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            //Click Event for each item.
+                                            if(i == 0){
+                                                Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                                                profileIntent.putExtra("user_id", list_user_id);
+                                                startActivity(profileIntent);
+                                            }
+                                            if(i == 1){
+                                                Intent chatIntent = new Intent(MainActivity.this, ChatActivity.class);
+                                                chatIntent.putExtra("user_id", list_user_id);
+                                                chatIntent.putExtra("user_name", userName);
+                                                startActivity(chatIntent);
+                                            }
+                                        }
+                                    });
+                                    builder.show();
+                                }
+                            });
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
 
-            @NonNull
-            @Override
-            public FriendsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.users_single, viewGroup, false);
-                return new FriendsViewHolder(view);
-            }
-        };
-        friendsRecyclerViewAdapter.startListening();
-        mFriendsList.setAdapter(friendsRecyclerViewAdapter);
+                @NonNull
+                @Override
+                public FriendsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                    View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.users_single, viewGroup, false);
+                    return new FriendsViewHolder(view);
+                }
+            };
+            friendsRecyclerViewAdapter.startListening();
+            mFriendsList.setAdapter(friendsRecyclerViewAdapter);
+        }
     }
 
     @Override
