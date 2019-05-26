@@ -51,8 +51,18 @@ public class UsersActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>()
+        FirebaseRecyclerOptions<User> options;
+//        final String isSearch = getIntent().getStringExtra("user_search");
+//        if(isSearch.isEmpty()){
+//            options = new FirebaseRecyclerOptions.Builder<User>()
+//                    .setQuery(mDataBaseUser, User.class).build();
+//        }else {
+//            options = new FirebaseRecyclerOptions.Builder<User>()
+//                    .setQuery(mDataBaseUser.orderByChild("name").equalTo(isSearch), User.class).build();
+//        }
+        options = new FirebaseRecyclerOptions.Builder<User>()
                 .setQuery(mDataBaseUser, User.class).build();
+
         FirebaseRecyclerAdapter<User, UsersViewHolder> firebaseApdater = new FirebaseRecyclerAdapter<User, UsersViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull UsersViewHolder holder, int position, @NonNull User model) {
@@ -63,7 +73,12 @@ public class UsersActivity extends AppCompatActivity {
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent profileIntent = new Intent(UsersActivity.this, ProfileActivity.class);
+                        Intent profileIntent;
+                        if( userId.equals(FirebaseAuth.getInstance().getUid())){
+                            profileIntent = new Intent(UsersActivity.this, SettingActivity.class);
+                        }else {
+                            profileIntent = new Intent(UsersActivity.this, ProfileActivity.class);
+                        }
                         profileIntent.putExtra("user_id",userId);
                         startActivity(profileIntent);
                     }

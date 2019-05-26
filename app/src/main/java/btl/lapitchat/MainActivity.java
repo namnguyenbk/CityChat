@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
     private String mCurrent_user_id;
 
     private Toolbar mToolbar;
-    private Button suggestBtbn;
+    private EditText searchEditText;
+    private Button searchButton;
+    private TextView noFriends;
     private static FirebaseAuth mAuth;
     private static FirebaseDatabase mData;
 
@@ -71,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mData = FirebaseDatabase.getInstance();
 
-        suggestBtbn = findViewById(R.id.suggest_btn);
+        searchEditText = findViewById(R.id.search_friends_input);
+        searchButton = findViewById(R.id.search_friends_button);
+        noFriends = findViewById(R.id.no_friends_label);
 
         // Toolbar
         mToolbar = findViewById(R.id.main_page_toolbar);
@@ -86,6 +91,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        noFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profile = new Intent(MainActivity.this, ProfileActivity.class);
+                profile.putExtra("user_search", searchEditText.getText());
+                startActivity(profile);
+            }
+        });
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if ( currentUser == null){
@@ -103,18 +116,18 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(!dataSnapshot.exists()) {
                         System.out.println("Khong co ban");
-                        suggestBtbn.setVisibility(View.VISIBLE);
-                        suggestBtbn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent usersIntent = new Intent(MainActivity.this, UsersActivity.class);
-                                startActivity(usersIntent);
-                            }
-                        });
+                        noFriends.setVisibility(View.VISIBLE);
+//                        noFriends.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                Intent usersIntent = new Intent(MainActivity.this, UsersActivity.class);
+//                                startActivity(usersIntent);
+//                            }
+//                        });
                     }
                     else {
                         System.out.println("Co ban");
-                        suggestBtbn.setVisibility(View.GONE);
+                        noFriends.setVisibility(View.GONE);
                     }
                 }
                 @Override
