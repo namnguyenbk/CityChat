@@ -91,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        noFriends.setOnClickListener(new View.OnClickListener() {
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent profile = new Intent(MainActivity.this, ProfileActivity.class);
-                profile.putExtra("user_search", searchEditText.getText());
+                Intent profile = new Intent(MainActivity.this, UsersActivity.class);
+                profile.putExtra("user_search", searchEditText.getText().toString());
                 startActivity(profile);
             }
         });

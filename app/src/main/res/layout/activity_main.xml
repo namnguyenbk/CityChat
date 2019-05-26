@@ -58,7 +58,7 @@
         android:id="@+id/no_friends_label"
         android:layout_below="@id/group_search"
         android:layout_width="wrap_content"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:gravity="center_horizontal"
         android:layout_margin="30dp"
         android:text="CHƯA CÓ BẠN BÈ"

@@ -19,6 +19,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import btl.lapitchat.R;
@@ -29,19 +30,31 @@ public class UsersActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private RecyclerView mUsersList;
-    private DatabaseReference mDataBaseUser;
+    private Query mDataBaseUser;
     private static Context context;
     private static DatabaseReference mAuth;
+    private static String tieude = "Tất cả mọi người";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
+
+        final String userId = getIntent().getStringExtra("user_search");
+
         UsersActivity.context = getApplicationContext();
-        mDataBaseUser = FirebaseDatabase.getInstance().getReference().child("users");
+        if (userId!= null && userId.length() !=0) {
+            mDataBaseUser = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("name")
+                    .startAt(userId)
+                    .endAt(userId+"\uf8ff");
+            tieude = "Kết quả tìm được";
+        }
+        else {
+            mDataBaseUser = FirebaseDatabase.getInstance().getReference().child("users");
+        }
         mToolbar = findViewById(R.id.users_appbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("All users");
+        getSupportActionBar().setTitle(tieude);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mUsersList = findViewById(R.id.list_users_view);
         mUsersList.setHasFixedSize(true);
