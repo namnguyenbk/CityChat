@@ -44,7 +44,7 @@ public class UsersActivity extends AppCompatActivity {
 
         UsersActivity.context = getApplicationContext();
         if (userId!= null && userId.length() !=0) {
-            mDataBaseUser = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("name")
+            mDataBaseUser = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("uppername")
                     .startAt(userId)
                     .endAt(userId+"\uf8ff");
             tieude = "Kết quả tìm được";

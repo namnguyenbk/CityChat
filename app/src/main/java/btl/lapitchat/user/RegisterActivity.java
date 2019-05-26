@@ -90,6 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
                             DatabaseReference mDataReg = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
                             HashMap<String, String> userData = new HashMap<>();
                             userData.put("name", displayName);
+                            userData.put("uppername", displayName.toUpperCase());
                             userData.put("status", "ACTIVATE");
                             userData.put("image", "default");
                             userData.put("thumbnail", "default");

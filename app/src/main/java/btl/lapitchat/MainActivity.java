@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent profile = new Intent(MainActivity.this, UsersActivity.class);
-                profile.putExtra("user_search", searchEditText.getText().toString());
+                profile.putExtra("user_search", searchEditText.getText().toString().toUpperCase());
                 startActivity(profile);
             }
         });
