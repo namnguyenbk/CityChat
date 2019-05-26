@@ -62,7 +62,7 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        helper = new UserHelper(this);
+        //helper = new UserHelper(this);
         mToolbar = findViewById(R.id.setting_appbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Account Setting");
@@ -188,7 +188,7 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        helper.close();
+        //helper.close();
     }
 
 }

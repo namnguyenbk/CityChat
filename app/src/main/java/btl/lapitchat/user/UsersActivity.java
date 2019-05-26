@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -30,13 +31,13 @@ public class UsersActivity extends AppCompatActivity {
     private RecyclerView mUsersList;
     private DatabaseReference mDataBaseUser;
     private static Context context;
+    private static DatabaseReference mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
         UsersActivity.context = getApplicationContext();
-
         mDataBaseUser = FirebaseDatabase.getInstance().getReference().child("users");
         mToolbar = findViewById(R.id.users_appbar);
         setSupportActionBar(mToolbar);

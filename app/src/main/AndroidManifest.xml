@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".CityChat"
@@ -42,6 +43,9 @@
         </activity>
         <activity
             android:name=".user.UsersActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".user.RssActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".chat.RequestsFragment"

@@ -28,6 +28,7 @@ import btl.lapitchat.MainActivity;
 import btl.lapitchat.R;
 import btl.lapitchat.utility.ComonComponents;
 
+
 public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText mDisplayName;
     private TextInputEditText mEmail;
@@ -38,11 +39,13 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference mData;
     private ProgressDialog mRegProgress;
     private DatabaseReference mUserDatabase;
+    UserHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        helper = new UserHelper(this);
         // Toolbar
         mToolbar = findViewById(R.id.register_toolbar);
         setSupportActionBar(mToolbar);
@@ -73,15 +76,17 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void registerUser(final String displayName, String email, String password) {
+    private void registerUser(final String displayName, final String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if (task.isSuccessful()) {
+
                             FirebaseUser currentUser = MainActivity.getmAuth().getCurrentUser();
                             String uid = currentUser.getUid();
+                            helper.insert(uid, displayName, email,"ACTIVATE" );
                             DatabaseReference mDataReg = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
                             HashMap<String, String> userData = new HashMap<>();
                             userData.put("name", displayName);

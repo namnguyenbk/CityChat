@@ -10,6 +10,7 @@
     <string name="account_setting_label">Cái đặt tuỳ chọn</string>
     <string name="all_users_label">Danh sách người dùng</string>
     <string name="create_new_account_label">Tạo mới tài khoản</string>
+    <string name="suggest_label">Đề xuất bạn bè</string>
     <string name="login_label">Đăng nhập</string>
     <string name="login_account_label">Đăng nhập</string>
     <string name="already_an_acc_label">ĐÃ CÓ TÀI KHOẢN</string>

@@ -13,11 +13,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,9 +40,11 @@ import btl.lapitchat.chat.ChatActivity;
 import btl.lapitchat.chat.Friends;
 import btl.lapitchat.chat.RequestsFragment;
 import btl.lapitchat.user.ProfileActivity;
+import btl.lapitchat.user.RssActivity;
 import btl.lapitchat.user.SettingActivity;
 import btl.lapitchat.user.StartActivity;
 import btl.lapitchat.user.UsersActivity;
+import btl.lapitchat.utility.ComonComponents;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private String mCurrent_user_id;
 
     private Toolbar mToolbar;
+    private Button suggestBtbn;
     private static FirebaseAuth mAuth;
     private static FirebaseDatabase mData;
 
@@ -65,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         mData = FirebaseDatabase.getInstance();
+
+        suggestBtbn = findViewById(R.id.suggest_btn);
 
         // Toolbar
         mToolbar = findViewById(R.id.main_page_toolbar);
@@ -82,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if ( currentUser == null){
-            System.out.println("null");
             gotoStartView();
         } else {
             mUserRef.child("online").setValue("true");
@@ -92,6 +98,30 @@ public class MainActivity extends AppCompatActivity {
             mCurrent_user_id = mAuth.getCurrentUser().getUid();
 
             mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("friends").child(mCurrent_user_id);
+            FirebaseDatabase.getInstance().getReference().child("friends").child(mCurrent_user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(!dataSnapshot.exists()) {
+                        System.out.println("Khong co ban");
+                        suggestBtbn.setVisibility(View.VISIBLE);
+                        suggestBtbn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent usersIntent = new Intent(MainActivity.this, UsersActivity.class);
+                                startActivity(usersIntent);
+                            }
+                        });
+                    }
+                    else {
+                        System.out.println("Co ban");
+                        suggestBtbn.setVisibility(View.GONE);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
             mFriendsDatabase.keepSynced(true);
             mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users");
             mUsersDatabase.keepSynced(true);
@@ -186,6 +216,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.main_users_btn){
             Intent usersIntent = new Intent(MainActivity.this, UsersActivity.class);
+            startActivity(usersIntent);
+        }if (item.getItemId() == R.id.rss_feed_btn){
+            Intent usersIntent = new Intent(MainActivity.this, RssActivity.class);
             startActivity(usersIntent);
         }
          return true;

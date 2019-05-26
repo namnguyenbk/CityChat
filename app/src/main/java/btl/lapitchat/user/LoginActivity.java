@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.ArrayList;
+
 import btl.lapitchat.MainActivity;
 import btl.lapitchat.R;
 import btl.lapitchat.utility.ComonComponents;
@@ -38,13 +40,13 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText loginPass;
     UserHelper helper;
     private Button loginBtn;
-    private  String[] users = new String[] {
-    };
+    private ArrayList<String> users = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         helper = new UserHelper(this);
+        users =  helper.getAllUserEmail();
         setContentView(R.layout.activity_login);
         mAuth = MainActivity.getmAuth();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users");
@@ -56,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         loginEmail = findViewById(R.id.login_email);
-        ArrayAdapter adapterUser = new ArrayAdapter(this,android.R.layout.simple_list_item_1, users);
+        ArrayAdapter<String> adapterUser = new ArrayAdapter(this,android.R.layout.simple_list_item_1, users);
         loginEmail.setAdapter(adapterUser);
         loginEmail.setThreshold(1);
         loginPass = findViewById(R.id.login_password);
@@ -119,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        helper.close();
+        //helper.close();
     }
 
 

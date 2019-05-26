@@ -21,11 +21,29 @@
             <!--app:tabTextColor="@color/white">-->
         <!--</android.support.design.widget.TabLayout>-->
     </android.support.design.widget.AppBarLayout>
+
+    <Button
+        android:id="@+id/suggest_btn"
+        android:layout_width="132dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_app_bar_layout"
+        android:layout_gravity="end"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/accentV2"
+        android:padding="5dp"
+        android:text="@string/suggest_label"
+        android:textColor="@color/white" />
     <android.support.v7.widget.RecyclerView
         android:layout_margin="10pt"
         android:id="@+id/friends_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/main_app_bar_layout"/>
+        android:layout_below="@id/suggest_btn"/>
+
 
 </RelativeLayout>
