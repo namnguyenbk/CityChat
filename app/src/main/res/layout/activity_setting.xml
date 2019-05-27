@@ -54,7 +54,7 @@
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:background="@color/accentV1"
-        android:text="CHANGE AVATAR"
+        android:text="ẢNH ĐẠI DIỆN"
         />
     <Button
         android:id="@+id/change_status_btn"
@@ -67,20 +67,19 @@
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:background="@color/accentV1"
-        android:text="CHANGE STATUS"
+        android:text="TRẠNG THÁI HOẠT ĐỘNG"
         />
+
     <Button
         android:id="@+id/change_displayname_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/change_status_btn"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="100dp"
         android:layout_marginBottom="5dp"
-        android:visibility="invisible"
-        android:layout_below="@id/change_status_btn"
-        android:textColor="@color/white"
-        android:layout_centerHorizontal="true"
         android:background="@color/accentV1"
-        android:text="CHANGE DISPLAY NAME"
-        />
+        android:text="TÊN NGƯỜI DÙNG"
+        android:textColor="@color/white" />
 </RelativeLayout>

@@ -6,12 +6,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,40 +34,51 @@ import btl.lapitchat.utility.RssFeedListAdapter;
 
 public class RssActivity extends AppCompatActivity {
     private static final String TAG = "RssActivity";
-
+    private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
-    private EditText mEditText;
-    private Button mFetchFeedButton;
+    private Spinner mSpnCategory;
     private SwipeRefreshLayout mSwipeLayout;
-    private TextView mFeedTitleTextView;
-    private TextView mFeedLinkTextView;
-    private TextView mFeedDescriptionTextView;
 
     private List<RssFeed> mFeedModelList;
-    private String mFeedTitle;
-    private String mFeedLink;
-    private String mFeedDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rss);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mEditText = (EditText) findViewById(R.id.rssFeedEditText);
-        mFetchFeedButton = (Button) findViewById(R.id.fetchFeedButton);
-        mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        mFeedTitleTextView = (TextView) findViewById(R.id.feedTitle);
-        mFeedDescriptionTextView = (TextView) findViewById(R.id.feedDescription);
-        mFeedLinkTextView = (TextView) findViewById(R.id.feedLink);
+        mRecyclerView =  findViewById(R.id.recyclerView);
+        mSpnCategory = findViewById(R.id.spnCategory);
 
+        List<String> list = new ArrayList<>();
+        list.add("Tin mới nhất");
+        list.add("Thời sự");
+        list.add("Kinh doanh");
+        list.add("Giải trí");
+        list.add("Thể thao");
+        list.add("Khoa học");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,list);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        mSpnCategory.setAdapter(adapter);
+
+        mSwipeLayout = findViewById(R.id.swipeRefreshLayout);
+        mToolbar = findViewById(R.id.users_appbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Tin tức");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mFetchFeedButton.setOnClickListener(new View.OnClickListener() {
+        mSpnCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 new FetchFeedTask().execute((Void) null);
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
         });
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -127,11 +142,6 @@ public class RssActivity extends AppCompatActivity {
                         RssFeed item = new RssFeed(title, link, description);
                         items.add(item);
                     }
-                    else {
-                        mFeedTitle = title;
-                        mFeedLink = link;
-                        mFeedDescription = description;
-                    }
 
                     title = null;
                     link = null;
@@ -153,7 +163,28 @@ public class RssActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             mSwipeLayout.setRefreshing(true);
-            urlLink = mEditText.getText().toString();
+            urlLink = mSpnCategory.getSelectedItem().toString();
+            switch (urlLink) {
+                case "Tin mới nhất":
+                    urlLink = "tin-moi-nhat.rss";
+                    break;
+                case "Thời sự":
+                    urlLink = "thoi-su.rss";
+                    break;
+                case "Kinh doanh":
+                    urlLink = "kinh-doanh.rss";
+                    break;
+                case "Giải trí":
+                    urlLink = "giai-tri.rss";
+                    break;
+                case "Thể thao":
+                    urlLink = "the-thao.rss";
+                    break;
+                case "Khoa học":
+                    urlLink = "khoa-hoc.rss";
+                    break;
+            }
+
         }
 
         @Override
@@ -162,8 +193,7 @@ public class RssActivity extends AppCompatActivity {
                 return false;
 
             try {
-                if(!urlLink.startsWith("http://") && !urlLink.startsWith("https://"))
-                    urlLink = "http://" + urlLink;
+                urlLink = "https://vnexpress.net/rss/" + urlLink;
 
                 URL url = new URL(urlLink);
                 InputStream inputStream = url.openConnection().getInputStream();
@@ -182,9 +212,6 @@ public class RssActivity extends AppCompatActivity {
             mSwipeLayout.setRefreshing(false);
 
             if (success) {
-                mFeedTitleTextView.setText("Feed Title: " + mFeedTitle);
-                mFeedDescriptionTextView.setText("Feed Description: " + mFeedDescription);
-                mFeedLinkTextView.setText("Feed Link: " + mFeedLink);
                 // Fill RecyclerView
                 mRecyclerView.setAdapter(new RssFeedListAdapter(mFeedModelList));
             } else {

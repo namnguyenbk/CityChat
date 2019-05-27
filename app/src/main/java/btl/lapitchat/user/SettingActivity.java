@@ -65,7 +65,7 @@ public class SettingActivity extends AppCompatActivity {
         //helper = new UserHelper(this);
         mToolbar = findViewById(R.id.setting_appbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Account Setting");
+        getSupportActionBar().setTitle("Cài đặt tài khoản");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAvatar = findViewById(R.id.avatar_setting);
